@@ -53,11 +53,6 @@ def docker_build(script_id):
         correct, log = DockerService.build(
             script_id=script_id, path=extract_path, tag_image=script.slug
         )
-        try:
-            docker_client.remove(image=script.slug)
-        except Exception:
-            logging.info("Error removing the image")
-            rollbar.report_exc_info()
         logging.debug("Changing status")
         script = Script.query.get(script_id)
         if correct:
@@ -175,9 +170,13 @@ class DockerService(object):
             environment["ENV"] = "prod"
             command = "./entrypoint.sh " + params
             if os.getenv("ENVIRONMENT") != "dev":
-                missing_vars = [f'{k}: {v}' for k, v in environment.items() if v is None]
+                missing_vars = [
+                    f"{k}: {v}" for k, v in environment.items() if v is None
+                ]
                 if missing_vars:
-                    logging.error(f"Missing values for enviroment variables {missing_vars}")
+                    logging.error(
+                        f"Missing values for enviroment variables {missing_vars}"
+                    )
                 env = [k + "=" + v for k, v in environment.items()]
                 logging.info(env)
                 container = docker_client.services.create(
