@@ -175,6 +175,9 @@ class DockerService(object):
             environment["ENV"] = "prod"
             command = "./entrypoint.sh " + params
             if os.getenv("ENVIRONMENT") != "dev":
+                missing_vars = [f'{k}: {v}' for k, v in environment.items() if v is None]
+                if missing_vars:
+                    logging.error(f"Missing values for enviroment variables {missing_vars}")
                 env = [k + "=" + v for k, v in environment.items()]
                 logging.info(env)
                 container = docker_client.services.create(
