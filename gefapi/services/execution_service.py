@@ -23,7 +23,7 @@ from gefapi.services import ScriptService
 from gefapi.services import UserService
 
 
-EXECUTION_FINISHED_MAIL_CONTENT = "<p>Thank you for Trends.Earth. The below task has {}. More details on this task are below: </p>\
+EXECUTION_FINISHED_MAIL_CONTENT = "<p>Thank you for using Trends.Earth. The below task has {}. More details on this task are below: </p>\
                                     <ul><li>Task name: {}</li> \
                                     <li>Job: {}</li> \
                                     <li>Task ID: {}</li> \
